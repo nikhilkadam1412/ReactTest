@@ -1,11 +1,18 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import imgUrl from '../assets/images/imgUrl.js';
 
 const Header = () => {
+    const navigate = useNavigate();
+
+    const goToHome = () => {
+        navigate('/');
+    }
+
     return (
         <div className="header">
-            <h1>
+            <h1 onClick={goToHome}>
                 <img src={imgUrl.brand_logo} className="" alt="logo" />
             </h1>
             <Nav>

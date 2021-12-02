@@ -7,6 +7,7 @@ import './assets/css/style.css'
 import HomePage from "./pages/HomePage";
 import AboutUs from "./pages/AboutUs";
 import SignIn from "./pages/SignIn";
+import UserDashboard from "./pages/UserDashboard";
 
 //import components
 import Header from "./components/Header";
@@ -20,8 +21,9 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/about-us" element={<AboutUs />} />UserDashboard
             <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/user-dashboard" element={<UserDashboard />} />
           </Routes>
           <Footer />
         </Fragment>
