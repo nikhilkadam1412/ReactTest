@@ -21,6 +21,9 @@ a { text-decoration: none; }
     width: 60px;
     cursor: pointer;
 }
+
+.header .nav .nav-link { color: #000; }
+.header .nav .nav-link:hover { text-decoration: underline; }
 /* Header styling ends */
 
 
@@ -78,6 +81,9 @@ a { text-decoration: none; }
 
 .footer h3 { text-align: left; }
 .footer .footer_nav a { padding: 0; }
+
+.footer_nav .nav-link { color: #000; }
+.footer_nav .nav-link:hover { text-decoration: underline; }
 /* Footer styling ends */
 
 /* User Dashboard */
