@@ -3,10 +3,10 @@ import { Nav, NavItem, NavLink } from 'reactstrap';
 
 const Footer = () => {
     return (
-        <div>
-            <p>Link Based</p>
-            <Nav>
-                <NavLink href="#">Link</NavLink>
+        <div className="footer">
+            <h3>Footer Section</h3>
+            <Nav className="footer_nav">
+                <NavLink href="/">Home</NavLink>
             </Nav>
         </div>
     );

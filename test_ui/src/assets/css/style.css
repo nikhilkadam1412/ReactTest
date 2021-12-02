@@ -1,16 +1,69 @@
 /* Common Css Starts here */
+html { scroll-behavior: smooth; }
+body { background-image: none; }
 img { width: 100%; }
 a { text-decoration: none; }
+*,h1,h2,h3,h4,h5,h6 { 
+    margin: 0;
+    text-align: left;
+}
 
 /* Header styling starts */
 .App .header {
-    padding: 0 5%;
+    padding: 10px 5% 9px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 4px 1px 6px #ccc;
 }
 
-.App .header h1 { width: 120px; }
-
+.App .header h1 { width: 60px; }
 /* Header styling ends */
 
+
+/* Home page styling */
+.home_page { padding: 25px 5%; }
+
+.bgimg {
+    background-position: center;
+    background-size: cover;
+    background-image: url('../images/mac.jpg');
+    min-height: 80vh;
+}
+
+.home_page {
+    display: flex;
+    align-items: center;
+}
+
+.home_page .banner_text {
+    width: 55%;
+    text-align: left;
+    color: #fff;
+}
+
+.home_page .banner_text > h2 { margin: 10px 0 20px; }
+/* Home page styling ends */
+
+/* About us page styling */
+.about_us_page {
+    padding: 35px 5%;
+    text-align: left;
+}
+/* About us page styling ends*/
+
+.sign_in_page {
+    height: 70vh;
+    padding: 35px 5%;
+    display: flex;
+    align-items: center;
+}
+
+/* Footer styling */
+.footer {
+    padding: 35px 5%;
+    background: #ccc;
+}
+
+.footer h3 { text-align: left; }
+.footer .footer_nav a { padding: 0; }
