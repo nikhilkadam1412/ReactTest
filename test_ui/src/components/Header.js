@@ -1,28 +1,26 @@
 import React from "react";
 import { Nav, NavItem, NavLink } from 'reactstrap';
+import logo from '../logo.svg';
 
 const Header = () => {
     return (
-        <div>
-            <p>List Based</p>
+        <div className="header">
+            <h1>
+                <img src={logo} className="App-logo" alt="logo" />
+            </h1>
             <Nav>
-            <NavItem>
-                <NavLink href="#">Link</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink href="#">Link</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink href="#">Another Link</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink disabled href="#">Disabled Link</NavLink>
-            </NavItem>
-            </Nav>
-            <hr />
-            <p>Link Based</p>
-            <Nav>
-            <NavLink href="#">Link</NavLink> <NavLink href="#">Link</NavLink> <NavLink href="#">Another Link</NavLink> <NavLink disabled href="#">Disabled Link</NavLink>
+                <NavItem>
+                    <NavLink href="#">Link</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink href="#">Link</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink href="#">Another Link</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink disabled href="#">Disabled Link</NavLink>
+                </NavItem>
             </Nav>
         </div>
     );

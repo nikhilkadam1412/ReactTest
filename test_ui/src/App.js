@@ -1,13 +1,26 @@
-import logo from './logo.svg';
+import React,{Fragment} from "react";
+import { BrowserRouter, Router, Route, Routes, Redirect } from "react-router-dom";
 import './App.css';
+import './assets/css/style.css'
+
+//import components
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <div className="App">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
+      <BrowserRouter>
+        <Fragment>
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+          <Footer />
+        </Fragment>
+      </BrowserRouter>        
     </div>
   );
 }

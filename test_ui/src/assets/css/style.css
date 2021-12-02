@@ -1,0 +1,16 @@
+/* Common Css Starts here */
+img { width: 100%; }
+a { text-decoration: none; }
+
+/* Header styling starts */
+.App .header {
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.App .header h1 { width: 120px; }
+
+/* Header styling ends */
+
