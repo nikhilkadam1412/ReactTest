@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
     Container,
     Row,
@@ -9,13 +10,29 @@ import {
     Input,
     Form,Modal, ModalHeader, ModalBody, Card, CardBody,
 } from "reactstrap";
+import apiBaseUrl from "../config";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function SignIn(props) {
+    const navigate = useNavigate();
+    // console.log(setAuth);
+
     //For Sign Up Modal
     const {
         buttonLabel,
         className
     } = props;
+
+    const toastBox = {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: '',
+    }
 
     let name, value;
     const [userName, setUserName] = useState('');
@@ -34,12 +51,53 @@ function SignIn(props) {
 
     const loginUser = async (e) => {
         e.preventDefault();
-        console.log("login clicked")
+        console.log("login clicked");
+        if(userName && passWord) {
+
+            try {
+                 const res = await fetch(`${apiBaseUrl}loginUser`, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({userName, passWord}),
+                }).then(response => {
+                    return response.text();
+                })
+                .then(data => {
+                    const obj = JSON.parse(data);
+                    console.log('obj login', obj)
+                      if ('jwtToken' in obj) {
+                        localStorage.setItem("token", obj.jwtToken);
+                        localStorage.setItem("DataObj", JSON.stringify(obj));
+                        // setAuth(true);
+                        toast.success("Login Successfully",toastBox);
+                        localStorage.setItem('loggedIN', true);
+                        navigate('/user-dashboard');
+                      } else {
+                        toast(obj.res, toastBox);
+                        // setAuth(false);
+                        // toast.error(data);
+                      }
+                });
+            } catch(error) {
+              console.log('err',error);
+              if(error) {
+                toast('There was problem with the server',toastBox);
+              } else {
+                  console.log(error.response.data.msg);
+              }
+            }
+            // setInfoMsg(false);           
+          } else {
+            console.log("Please fill all fields");
+            // setInfoMsg(true);
+          }
     }
 
     const handleFormInput = (e) => {
         name = e.target.name;
-        value = e.target.type === 'checkbox' ? (e.target.checked === true ? 1 : 0) : e.target.value;
+        value = e.target.value;
         setUserDetail({...userDetail, [name]:value});
     }
 
@@ -51,8 +109,47 @@ function SignIn(props) {
 
     const registerUserSubmit = async (e) => {//Register data POST call
         e.preventDefault();
-        console.log("User Register");
-        toggle()
+        console.log("User Register", userDetail);
+        if(userDetail.password !== userDetail.confirmPass) {
+            setMatchPassword(true);
+            return;
+        }
+        if(userDetail.user && userDetail.password && userDetail.email) {
+            setMatchPassword(false);
+            const { user, email, password } = userDetail;
+            try {
+                const res = await fetch(`${apiBaseUrl}registerUser`, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({user, email, password}),
+                }).then(response => {
+                    return response.text();
+                })
+                .then(data => {
+                    console.log('data',data)
+                    if(data.length < 100) {
+                        toast(`${data}`, toastBox)
+                    } else {
+                        toast.success("New User Registered!", toastBox);
+                        // getNewToken(data);
+                    }
+                    // getNewToken(data);
+                    toggle();
+                });
+            } catch(err) {
+                if(err.response.status === 500) {
+                    console.log('There was problem with the server');
+                } else {
+                    console.log(err.response.data.msg);
+                }
+            }
+            setInfoMsg(false);           
+        } else {
+            console.log("Please fill all fields");
+            setInfoMsg(true);
+        }
     }
 
     return (
@@ -67,11 +164,11 @@ function SignIn(props) {
                             <Form className="d-block w-50 mx-auto">
                                 <FormGroup className="my-4">
                                     <Input
-                                    type="text"
+                                    type="email"
                                     name="username"
                                     id="username"
                                     className="side_form_formContol"
-                                    placeholder="Username"
+                                    placeholder="Email Id"
                                     onChange = {e => setUserName(e.target.value)}
                                     />
                                 </FormGroup>
