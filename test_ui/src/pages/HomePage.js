@@ -1,13 +1,14 @@
 import React from "react";
 import { Button } from "reactstrap";
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 function HomePage() {
-    const navigate = useNavigate();
+    const history = useHistory();
 
     const goToDashboard = () => {
-        navigate('/user-dashboard');
+        // navigate('/user-dashboard');
+        history.push('/user-dashboard')
     }
 
     return (

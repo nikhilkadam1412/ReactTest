@@ -1,5 +1,5 @@
-import React,{Fragment, useEffect, useState} from "react";
-import { BrowserRouter, Router, Route, Routes, Navigate } from "react-router-dom";
+import React,{Component} from "react";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import './App.css';
 import './assets/css/style.css'
 import apiBaseUrl from "./config";
@@ -18,10 +18,13 @@ import Footer from "./components/Footer";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
-  const [isAuthenticated, checkIsAuthenticated] = useState(false);
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { isAuthenticated: false };
+  }
 
-  const checkAuthenticated = async () => {
+  checkAuthenticated = async () => {
     try {
       const res = await fetch(`${apiBaseUrl}verify`, {
         method: "POST",
@@ -30,8 +33,7 @@ function App() {
 
       const parseRes = await res.json();
 
-      parseRes === true ? checkIsAuthenticated(true) : checkIsAuthenticated(false);
-      localStorage.setItem('loggedIN', isAuthenticated);
+      parseRes === true ? this.setState({ isAuthenticated: true }) : this.setState({ isAuthenticated: false });
       console.log('parseRes',parseRes)
     } catch (err) {
       console.log('verification Error')
@@ -39,36 +41,60 @@ function App() {
     }
   };
 
-  const setAuth = boolean => {
-    checkIsAuthenticated(boolean);
+  setAuth = boolean => {
+    this.setState({ isAuthenticated: boolean })
   };
 
-  useEffect(() => {
-    checkAuthenticated();
-  })
+  componentDidMount() {
+    this.checkAuthenticated();
+  }
 
-  return (
+  render() {
+    return (
     <div className="App">
-      <BrowserRouter>
-        <Fragment>
-          <Header />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/user-dashboard" element={<UserDashboard />} />
-            {/* <Route path="/sign-in" element={() => {
-              !isAuthenticated ? <SignIn /> : <Navigate to="/user-dashboard" />
-            } 
-            }/> */}
-            {/* <Route path="/user-dashboard"  element={(props) => {
-              !isAuthenticated ? <SignIn {...props} setAuth={setAuth}/> : <UserDashboard />
-            } 
-            }/> */}
-          </Routes>
-          <Footer />
-        </Fragment>
-      </BrowserRouter>  
+      <BrowserRouter basename="/">
+          <Switch>
+            <Route exact path="/">
+              <Header setAuth={this.setAuth}/>
+              <HomePage />
+              <Footer />
+            </Route>
+            <Route path="/about-us">
+              <Header setAuth={this.setAuth}/>
+              <AboutUs />
+              <Footer />
+            </Route>
+
+            <Route exact path="/sign-in" render={props =>
+                !this.state.isAuthenticated ? (
+                  <>
+                    <Header setAuth={this.setAuth}/>
+                    <SignIn props={props} setAuth={this.setAuth} />
+                    <Footer />
+                  </>
+                ) : (
+                  <Redirect to="/user-dashboard" />
+                )
+              } />
+
+            <Route exact path="/user-dashboard" render={props =>
+                !this.state.isAuthenticated ? (
+                  <>
+                    <Header setAuth={this.setAuth}/>
+                    <SignIn props={props} setAuth={this.setAuth} />
+                    <Footer />
+                  </>
+                ) : (
+                  <>
+                    <Header setAuth={this.setAuth}/>
+                    <UserDashboard />
+                    <Footer />
+                  </>
+                )
+              } />
+            
+          </Switch>
+        </BrowserRouter> 
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -81,7 +107,7 @@ function App() {
         pauseOnHover={false}
       />      
     </div>
-  );
+  )};
 }
 
 export default App;

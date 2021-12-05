@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
     Container,
     Row,
@@ -14,8 +14,8 @@ import apiBaseUrl from "../config";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function SignIn(props) {
-    const navigate = useNavigate();
+function SignIn({props, setAuth}) {
+    const history = useHistory();
     // console.log(setAuth);
 
     //For Sign Up Modal
@@ -66,18 +66,16 @@ function SignIn(props) {
                 })
                 .then(data => {
                     const obj = JSON.parse(data);
-                    console.log('obj login', obj)
                       if ('jwtToken' in obj) {
                         localStorage.setItem("token", obj.jwtToken);
                         localStorage.setItem("DataObj", JSON.stringify(obj));
-                        // setAuth(true);
-                        toast.success("Login Successfully",toastBox);
                         localStorage.setItem('loggedIN', true);
-                        navigate('/user-dashboard');
+                        toast.success("Login Successfully",toastBox);
+                        setAuth(true);
+                        history.push('/user-dashboard')
                       } else {
                         toast(obj.res, toastBox);
-                        // setAuth(false);
-                        // toast.error(data);
+                        setAuth(false);
                       }
                 });
             } catch(error) {
